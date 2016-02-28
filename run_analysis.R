@@ -1,3 +1,9 @@
+# 0. Download and unzip data (executed on Mac)
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+download.file(url = fileUrl, destfile = "./temp.zip")
+unzip(zipfile = "./temp.zip")
+file.remove("./temp.zip")
+
 # 1. Merges the training and the test sets to create one data set.
 # Load Test set
 X_test <- read.table("./UCI HAR Dataset/test/X_test.txt")
@@ -34,4 +40,4 @@ data <- merge(data,labels,by.x="activity",by.y="id") %>% select(-activity) %>% r
 
 data_tidy <- group_by(data, subject, activity) %>% summarize_each(funs(mean))
 write.csv(x = data_tidy, file = "./output_dataset/tidy_data.csv")
-write.table(x = data-tidy, file = "./output_dataset/tidy_data.txt")
+write.table(x = data_tidy, file = "./output_dataset/tidy_data.txt")
