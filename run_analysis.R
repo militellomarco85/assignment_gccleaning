@@ -1,8 +1,11 @@
 # 0. Download and unzip data (executed on Mac)
-fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-download.file(url = fileUrl, destfile = "./temp.zip")
-unzip(zipfile = "./temp.zip")
-file.remove("./temp.zip")
+if(!file.exists("./UCI HAR Dataset/"))
+{
+    fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+    download.file(url = fileUrl, destfile = "./temp.zip")
+    unzip(zipfile = "./temp.zip")
+    file.remove("./temp.zip")
+}
 
 # 1. Merges the training and the test sets to create one data set.
 # Load Test set
@@ -14,6 +17,8 @@ y_test <- read.table("./UCI HAR Dataset/test/y_test.txt")
 X_train <- read.table("./UCI HAR Dataset/train/X_train.txt")
 subject_train <- read.table("./UCI HAR Dataset/train/subject_train.txt")
 y_train <- read.table("./UCI HAR Dataset/train/y_train.txt")
+
+
 
 # Create a data frame for test and train set
 testset <- cbind(subject_test,y_test, X_test)
@@ -39,5 +44,6 @@ data <- merge(data,labels,by.x="activity",by.y="id") %>% select(-activity) %>% r
 #    each variable for each activity and each subject.
 
 data_tidy <- group_by(data, subject, activity) %>% summarize_each(funs(mean))
+if(!file.exists("./output_dataset")) {dir.create("./output_dataset")}
 write.csv(x = data_tidy, file = "./output_dataset/tidy_data.csv")
 write.table(x = data_tidy, file = "./output_dataset/tidy_data.txt")
