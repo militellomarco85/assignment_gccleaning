@@ -1,14 +1,5 @@
-# 0. Download and unzip data (executed on Mac)
-if(!file.exists("./UCI HAR Dataset/"))
-{
-    fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-    download.file(url = fileUrl, destfile = "./temp.zip")
-    unzip(zipfile = "./temp.zip")
-    file.remove("./temp.zip")
-}
-
 # 1. Merges the training and the test sets to create one data set.
-# Load Test set
+# Load Test set. It is assumed that the Samsung data are present in the working directory
 X_test <- read.table("./UCI HAR Dataset/test/X_test.txt")
 subject_test <- read.table("./UCI HAR Dataset/test/subject_test.txt")
 y_test <- read.table("./UCI HAR Dataset/test/y_test.txt")
@@ -45,5 +36,4 @@ data <- select(data, subject, activity, grep("std|mean", names(data)))
 #    each variable for each activity and each subject.
 
 data_tidy <- group_by(data, subject, activity) %>% summarize_each(funs(mean))
-write.csv(x = data_tidy, file = "./tidy_data.csv")
-write.table(x = data_tidy, file = "./tidy_data.txt")
+write.table(x = data_tidy, file = "./tidy_data.txt", row.names = FALSE)
