@@ -75,6 +75,7 @@ The run_analysis.R script:
  - the activity labels are loaded into a data frame and merged with the dataset to replace activity ids with them
  - only the means and standard deviations are extraxted from the dataset
  - the resulting dataframe is grouped by subject and activity and the summirized using the function mean
+ - the final dataset, called data_tidy, is written in a file and returned
 
 Reference:
 ============
