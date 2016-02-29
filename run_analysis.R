@@ -37,3 +37,5 @@ data <- select(data, subject, activity, grep("std|mean", names(data)))
 
 data_tidy <- group_by(data, subject, activity) %>% summarize_each(funs(mean))
 write.table(x = data_tidy, file = "./tidy_data.txt", row.names = FALSE)
+
+data_tidy
