@@ -38,12 +38,12 @@ data <- data[, grep("subject|activity|std|mean", names(data))]
 # 3. Uses descriptive activity names to name the activities in the data set
 library(dplyr)
 labels <- read.table("./UCI HAR Dataset/activity_labels.txt", col.names=c("id", "activity_label"))
-data <- merge(data,labels,by.x="activity",by.y="id") %>% select(-activity) %>% rename(activity = activity_label) %>% select(subject, activity, grep("std|mean", names(data)))
+data <- merge(data,labels,by.x="activity",by.y="id", all = TRUE) %>% select(-activity) %>% rename(activity = activity_label) 
+data <- select(data, subject, activity, grep("std|mean", names(data)))
 
 # 5. From the data set in step 4, creates a second, independent tidy data set with the average of
 #    each variable for each activity and each subject.
 
 data_tidy <- group_by(data, subject, activity) %>% summarize_each(funs(mean))
-if(!file.exists("./output_dataset")) {dir.create("./output_dataset")}
-write.csv(x = data_tidy, file = "./output_dataset/tidy_data.csv")
-write.table(x = data_tidy, file = "./output_dataset/tidy_data.txt")
+write.csv(x = data_tidy, file = "./tidy_data.csv")
+write.table(x = data_tidy, file = "./tidy_data.txt")
